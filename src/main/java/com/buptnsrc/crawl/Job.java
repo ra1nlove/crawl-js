@@ -16,16 +16,16 @@ public class Job {
                         new FileInputStream(file));//考虑到编码格式
                 BufferedReader bufferedReader = new BufferedReader(read);
                 String lineTxt = null;
-                int i = 1;
                 while ((lineTxt = bufferedReader.readLine()) != null) {
                     String url = lineTxt;
                     String result = PageDownload.download(url);
                     if(result!=null) {
-                        File out = new File(outfilePath + i);
+                        String[] names = url.split("/");
+                        String filename = names[names.length-1];
+                        File out = new File(outfilePath + filename);
                         PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(new FileOutputStream(out)), true);
                         printWriter.write(result);
                         printWriter.close();
-                        i++;
                     }
                 }
                 read.close();
