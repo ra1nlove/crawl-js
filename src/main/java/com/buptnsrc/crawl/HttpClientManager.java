@@ -46,49 +46,8 @@ public class HttpClientManager {
      */
     public  static CloseableHttpClient getHttpClient() {
         CloseableHttpClient httpclient = null;
-        httpclient = HttpClients.custom().setConnectionManager(cm).setRetryHandler(getRetryTime()).build() ;
+        httpclient = HttpClients.custom().setConnectionManager(cm).build() ;
         return httpclient ;
-    }
-
-    /**
-     * 进行超时处理
-     * @return  超时处理方案的实例
-     */
-    private static HttpRequestRetryHandler getRetryTime() {
-        HttpRequestRetryHandler requestRetryHandler = new HttpRequestRetryHandler() {
-            //自定义回复策略
-            public boolean retryRequest(IOException exception, int executionCount, HttpContext context) {
-                //设置回复策略，当发生异常时候将自动重试3次
-                if ( executionCount >3 ) {
-                    return false ;
-                }
-                //服务停掉重新尝试连接
-                if ( exception instanceof NoHttpResponseException ) {
-                    return true ;
-                }
-                //超时
-                if ( exception instanceof InterruptedIOException ) {
-                    return true ;
-                }
-                //SSL异常不需要重试
-                if ( exception instanceof SSLHandshakeException ) {
-                    return false ;
-                }
-                if ( exception instanceof ConnectTimeoutException ) {
-                    // 连接被拒
-                    return false ;
-                }
-
-                HttpClientContext clientContext = HttpClientContext.adapt(context) ;
-                HttpRequest request = clientContext.getRequest() ;
-                boolean idempotent = !(request instanceof HttpEntityEnclosingRequest) ;
-                if ( idempotent ) {
-                    return true ;
-                }
-                return false ;
-            }
-        } ;
-        return requestRetryHandler ;
     }
 
 }
