@@ -82,7 +82,8 @@ public class Job {
         }
     }
 
-    public List<String> getJs(String text,String baseurl){
+    public List<String> getJs(String text,String baseurl) throws Exception{
+        String jstext = "";
         List<String> result = new ArrayList<String>();
         Document doc = Jsoup.parse(text);
         Elements links = doc.select("script");
@@ -101,7 +102,16 @@ public class Job {
                 }
             }catch (Exception e){
             }
+            if(link.html()!=null && link.html().length()>0){
+                jstext += link.html()+"\n  ============================================================ \n";
+            }
+            File out = new File(outfile+baseurl.replace("/","-"));
+            PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(new FileOutputStream(out)), true);
+            printWriter.write(jstext);
+            printWriter.close();
+
         }
+
         return result;
     }
 
