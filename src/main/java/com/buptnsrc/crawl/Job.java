@@ -2,6 +2,7 @@ package com.buptnsrc.crawl;
 
 import com.google.common.hash.BloomFilter;
 import com.google.common.hash.Funnels;
+import org.apache.commons.math3.geometry.euclidean.oned.Interval;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -147,7 +148,7 @@ public class Job {
 
     public static void main(String[] args){
         try {
-            Job job = new Job("/home/rain/url.txt", "/home/rain/out/", 100);
+            Job job = new Job(args[0], args[1], Integer.valueOf(args[2]));
             job.run();
         }catch (Exception e){
             e.printStackTrace();
