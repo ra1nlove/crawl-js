@@ -70,7 +70,7 @@ public class Job {
                             String filename = names[names.length - 1];
                             File out = new File(outfile + filename);
                             PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(new FileOutputStream(out)), true);
-                            printWriter.write(result);
+                            printWriter.write(content);
                             printWriter.close();
                             num++;
                         }
